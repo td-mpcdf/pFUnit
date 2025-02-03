@@ -4,7 +4,10 @@ add_library (PFUNIT::pfunit ALIAS pfunit)
 if (BUILD_SHARED_LIBS)
   add_library (pfunit_shared SHARED)
   add_library (PFUNIT::pfunit_shared ALIAS pfunit_shared)
-  set_target_properties(pfunit_shared PROPERTIES OUTPUT_NAME pfunit)
+  set_target_properties(pfunit_shared PROPERTIES
+    OUTPUT_NAME pfunit
+    INSTALL_RPATH_USE_LINK_PATH ON
+    )
   list(APPEND pfunit_targets pfunit_shared)
 endif ()
 
@@ -38,7 +41,12 @@ foreach(pfunit_target IN LISTS pfunit_targets)
   target_sources (${pfunit_target} PRIVATE pFUnit.F90 pfunit_main.F90)
   target_link_libraries (${pfunit_target} PUBLIC funit ${MPI_Fortran_LIBRARIES})
   target_link_libraries (${pfunit_target} PRIVATE pfunit-mpi-defines)
-
+  get_target_property(funit_rpath funit INSTALL_RPATH)
+  if (funit_rpath)
+    set_target_properties(${pfunit_target} PROPERTIES
+      INSTALL_RPATH "${funit_rpath}"
+    )
+  endif()
   install (DIRECTORY  ${CMAKE_CURRENT_BINARY_DIR}/mod/ DESTINATION ${dest}/include)
   install (TARGETS ${pfunit_target} EXPORT PFUNIT DESTINATION ${dest}/lib)
 endforeach()
