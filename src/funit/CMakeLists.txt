@@ -71,7 +71,11 @@ set(funit_targets funit)
 if (BUILD_SHARED_LIBS)
   add_library (funit_shared SHARED)
   add_library (PFUNIT::funit_shared ALIAS funit_shared)
-  set_target_properties(funit_shared PROPERTIES OUTPUT_NAME funit)
+  set_target_properties(funit_shared PROPERTIES
+    OUTPUT_NAME funit
+    INSTALL_RPATH_USE_LINK_PATH ON
+    INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/GFTL_SHARED-1.9/lib
+    )
   list(APPEND funit_targets funit_shared)
 endif()
 
