@@ -29,6 +29,7 @@ project (PFUNIT
   LANGUAGES Fortran C)
 
 cmake_policy(SET CMP0077 NEW)
+include(GNUInstallDirs)
 
 # Determine if pFUnit is built as a subproject (using
 # add_subdirectory) or if it is the main project. Snippet taken from
@@ -64,6 +65,11 @@ option (ENABLE_MPI_F08 "Use the 'mpi_f08' module." NO)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake" "${PROJECT_SOURCE_DIR}/include")
 include(BuildType)
 include(CheckCompilerCapabilities)
+
+# The following is needed for external projects using *nix make when
+# parent project builds pFUnit as a subproject.
+set (top_dir PFUNIT-${PFUNIT_VERSION_MAJOR}.${PFUNIT_VERSION_MINOR})
+set (PFUNIT_TOP_DIR "${CMAKE_INSTALL_PREFIX}/${top_dir}" CACHE PATH "")
 
 #-----------------------------------
 # Set default Fortran compiler flags
@@ -127,7 +133,7 @@ endif ()
 find_package(Python)
 
 set(CMAKE_SHARED_LIBRARY_LINK_Fortran_FLAGS "")
-set(CMAKE_SKIP_RPATH ON)
+#set(CMAKE_SKIP_RPATH ON)
 
 set (dest "PFUNIT-${PFUNIT_VERSION_MAJOR}.${PFUNIT_VERSION_MINOR}")
 
@@ -175,10 +181,6 @@ build_command(CTEST_CUSTOM_PRE_TEST TARGET build-tests)
 string(CONFIGURE \"@CTEST_CUSTOM_PRE_TEST@\" CTEST_CUSTOM_PRE_TEST_QUOTED ESCAPE_QUOTES)
 file(WRITE "${CMAKE_BINARY_DIR}/CTestCustom.cmake" "set(CTEST_CUSTOM_PRE_TEST ${CTEST_CUSTOM_PRE_TEST_QUOTED})" "\n")
 
-# The following is needed for external projects using *nix make when
-# parent project builds pFUnit as a subproject.
-set (top_dir PFUNIT-${PFUNIT_VERSION_MAJOR}.${PFUNIT_VERSION_MINOR})
-set (PFUNIT_TOP_DIR "${CMAKE_INSTALL_PREFIX}/${top_dir}" CACHE PATH "")
 
 # Packaging
 include(CMakePackageConfigHelpers)
