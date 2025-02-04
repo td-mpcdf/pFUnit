@@ -1,3 +1,4 @@
 [submodule "fArgParse"]
 	path = extern/fArgParse
-	url = https://github.com/Goddard-Fortran-Ecosystem/fArgParse.git
+	#url = https://github.com/Goddard-Fortran-Ecosystem/fArgParse.git
+	url = https://github.com/td-mpcdf/fArgParse.git
