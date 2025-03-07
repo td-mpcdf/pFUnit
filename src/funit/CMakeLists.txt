@@ -74,7 +74,7 @@ if (BUILD_SHARED_LIBS)
   set_target_properties(funit_shared PROPERTIES
     OUTPUT_NAME funit
     INSTALL_RPATH_USE_LINK_PATH ON
-    INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/GFTL_SHARED-1.9/lib
+    INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/GFTL_SHARED-1.10/lib
     )
   list(APPEND funit_targets funit_shared)
 endif()
